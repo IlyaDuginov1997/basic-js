@@ -1,5 +1,3 @@
-const {NotImplementedError} = require('../extensions/index.js');
-
 /**
  * Implement class VigenereCipheringMachine that allows us to create
  * direct and reverse ciphering machines according to task description
@@ -64,7 +62,9 @@ class VigenereCipheringMachineParent {
   }
 
   encrypt(str, stringKeyword) {
-    if (!str || !stringKeyword) return throw new Error('Incorrect arguments');
+    if (!str || !stringKeyword) {
+      throw new Error('Incorrect arguments');
+    }
 
     const strPreparedArrayWithBreakets = str.split('');
     const preparedArray = strPreparedArrayWithBreakets.filter(el => this.encryptObj.hasOwnProperty(el.toUpperCase()));
@@ -73,7 +73,7 @@ class VigenereCipheringMachineParent {
     for (let i = 0; i < preparedArray.length; i++) {
       const currentKeywordIndex = (i < stringKeyword.length) ? i : (i % stringKeyword.length);
       const upperKeywordIndex = stringKeyword[currentKeywordIndex].toUpperCase();
-      result.push(this.encryptObj[upperKeywordIndex][preparedArray[i]])
+      result.push(this.encryptObj[upperKeywordIndex][preparedArray[i].toLowerCase()])
     }
 
     for (let j = 0; j < str.length; j++) {
@@ -86,7 +86,9 @@ class VigenereCipheringMachineParent {
   }
 
   decrypt(str, stringKeyword) {
-    if (!str || !stringKeyword) return throw new Error('Incorrect arguments');
+    if (!str || !stringKeyword) {
+      throw new Error('Incorrect arguments');
+    }
 
     const strPreparedArrayWithBreakets = str.split('');
     const preparedArray = strPreparedArrayWithBreakets.filter(el => this.decryptObj.hasOwnProperty(el));
@@ -119,27 +121,22 @@ class VigenereCipheringMachine extends VigenereCipheringMachineParent {
   }
 
   encrypt(str, stringKeyword) {
-    if (!str || !stringKeyword) throw new Error('Incorrect arguments');
+    if (!str || !stringKeyword) {
+      throw new Error('Incorrect arguments');
+    }
 
     return super.encrypt(str, stringKeyword).split('').reverse().join('');
   }
 
   decrypt(str, stringKeyword) {
-    if (!str || !stringKeyword) throw new Error('Incorrect arguments');
+    if (!str || !stringKeyword) {
+      throw new Error('Incorrect arguments');
+    }
 
     return super.decrypt(str, stringKeyword).split('').reverse().join('');
   }
 }
 
-const directMachine = new VigenereCipheringMachine();
-const reverseMachine = new VigenereCipheringMachine(false);
-
-
-console.log(directMachine.encrypt('attack at dawn!', 'alphonse'));
-console.log(directMachine.decrypt('AEIHQX SX DLLU!', 'alphonse'));
-
-console.log(reverseMachine.encrypt('attack at dawn!', 'alphonse'));
-console.log(reverseMachine.decrypt('AEIHQX SX DLLU!', 'alphonse'));
 module.exports = {
   VigenereCipheringMachine
 };
